@@ -1,71 +1,93 @@
-<!-- amicablenumbers.html -->
+<!-- lotterysimulator.html -->
 
 <!doctype html>
 <html>
 
 <head>
 	<meta charset="utf-8">
-	<title>Amicable Numbers</title>
-
-	<script language="javascript">
-		function check_amicable() {
-			num1 = parseInt(document.getElementById("num1").value);
-			num2 = parseInt(document.getElementById("num2").value);
-
-			num1factors = [1];
-			for(var i = 2; i <= (num1/2); i++) {
-				if(isAFactor(i, num1)) {
-					num1factors.push(i);
-				}
-			}
-
-			num2factors = [1];
-			for(var i = 2; i <= (num2/2); i++) {
-				if(isAFactor(i, num2)) {
-					num2factors.push(i);
-				}
-			}
-
-			alert("The factors of " + num1 + " are: " + num1factors + ".\nThe factors of " + num2 + " are: " + num2factors + ".");
-
-			are_amicable = sumArray(num1factors) == num2 && sumArray(num2factors) == num1;
-
-			if(are_amicable) {
-				document.getElementById("result").innerHTML = "The numbers: " + num1 + " and " + num2 + " are amicable.";
-			}
-			else {
-				document.getElementById("result").innerHTML = "The numbers: " + num1 + " and " + num2 + " are not amicable.";
-			}
-		}
-
-		function isAFactor(x, y) {
-			return y%x == 0;
-		}
-
-		function sumArray(nums) {
-			sum = 0;
-			for(var i = 0; i < nums.length; i++) {
-				sum += nums[i];
-			}
-			return sum;
-		}
-	</script>
+	<title>Lottery Simulator</title>
 </head>
 
 <body>
-	
-	<form>
-		Enter two numbers:
-		<br><br>
-		<input type="text" id="num1">
-		<br><br>
-		<input type="text" id="num2">
-		<br><br>
-		<input type="button" value="Check if amicable" onclick="check_amicable()">
-		<br><br>
-	</form>
+	<script language="javascript">
 
-	<div id="result"></div>
+		var my_nums = [];
+		for(var i = 0; i < 5; i++) {
+			my_nums[i] = Math.round(Math.random() * 48);
+		}
 
+		my_lucky_ball = Math.round(Math.random() * 18);
+		my_nums.sort();
+
+		winning_nums = prompt("Please enter the first 5 winning numbers.").split(" ");
+		winning_lucky_ball = prompt("Please enter the winning lucky ball number");
+
+		matches = 0;
+		for(var i = 0; i < 5; i++) {
+			for(var j = 0; j < 5; j++) {
+				if(my_nums[i] == parseInt(winning_nums[j])) {
+					matches++;
+				}
+			}
+		}
+
+		lucky = (my_lucky_ball == winning_lucky_ball);
+
+		prize = "$0";
+		if(matches == 0 && lucky) {
+			prize = "$4";
+		}
+		else if(matches == 1 && lucky) {
+			prize = "$6";
+		}
+		else if(matches == 2 && !lucky) {
+			prize = "$3";
+		}
+		else if(matches == 2 && lucky) {
+			prize = "$25";
+		}
+		else if(matches == 3 && !lucky) {
+			prize = "$20";
+		}
+		else if(matches == 3 && lucky) {
+			prize = "$150";
+		}
+		else if(matches == 4 && !lucky) {
+			prize = "$200";
+		}
+		else if(matches == 4 && lucky) {
+			prize = "$5000";
+		}
+		else if(matches == 5 && !lucky) {
+			prize = "$25,000 a YEAR for LIFE";
+		}
+		else if(matches == 5 && lucky) {
+			prize = "$7,000 a YEAR for LIFE";
+		}
+
+		document.write("Your numbers are ")
+		for(var i = 0; i < 5; i++) {
+			document.write(my_nums[i] + " ")
+		}
+		document.write("and your lucky ball is " + my_lucky_ball + ".<br>");
+
+		document.write("The winning numbers are numbers are ");
+		for(var i = 0; i < 5; i++) {
+			document.write(winning_nums[i] + " ")
+		}
+		document.write("and the winning lucky ball is " + winning_lucky_ball + ".<br>");
+
+		document.write("Your first five numbers had " + matches + " matches.<br>");
+
+		if(lucky) {
+			document.write("Your lucky ball matched.<br>");
+		}
+		else {
+			document.write("Your lucky ball did not match.<br>");
+		}
+
+		document.write("You got a payout of " + prize + " for your pick.");
+		
+	</script>
 </body>
 </html>
